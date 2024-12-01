@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet author="KorniienkoD" id="user_1">
+        <createTable tableName="USERS">
+            <column name="ID" type="BIGINT">
+                <constraints nullable="false" />
+            </column>
+            <column name="USERNAME" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true" />
+            </column>
+            <column name="PASSWORD" type="VARCHAR(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="IS_ADMINISTRATOR" type="BOOLEAN">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <rollback>
+            <dropTable tableName="USERS" />
+        </rollback>
+    </changeSet>
+    <changeSet author="KorniienkoD" id="user_2">
+        <addPrimaryKey tableName="USERS" columnNames="ID" constraintName="PK_USERS" />
+        <rollback>
+            <dropPrimaryKey tableName="USERS" constraintName="PK_USERS" />
+        </rollback>
+    </changeSet>
+    <changeSet author="KorniienkoD" id="user_3">
+        <createSequence sequenceName="USERS_SEQ" />
+        <rollback>
+            <dropSequence sequenceName="USERS_SEQ" />
+        </rollback>
+    </changeSet>
+    <changeSet author="KorniienkoD" id="insert_user_1">
+        <insert tableName="USERS">
+            <column name="ID" value="0" />
+            <column name="USERNAME" value="admin" />
+            <column name="PASSWORD" value="admin" />
+            <column name="IS_ADMINISTRATOR" value="true" />
+        </insert>
+
+        <rollback>
+            <delete tableName="USERS">
+                <where>ID='0'</where>
+            </delete>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
